@@ -1,0 +1,26 @@
+{
+  "name": "whitegodz/discordwebhookapi",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "franc",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "pocketmine/pocketmine-mp": "5.5.0-BETA1"
+  },
+  "autoload": {
+    "classmap": [
+      "src"
+    ]
+  },
+  "extra": {
+    "virion": {
+      "spec": "3.0",
+      "namespace": "CortexPE/DiscordWebhookAPI"
+    }
+  }
+}
