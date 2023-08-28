@@ -16,5 +16,11 @@
     "classmap": [
       "src"
     ]
+  },
+  "extra": {
+    "virion": {
+      "spec": "3.0",
+      "namespace": "CortexPE\\DiscordWebhookAPI"
+    }
   }
 }
