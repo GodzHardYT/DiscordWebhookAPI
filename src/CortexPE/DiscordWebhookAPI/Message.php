@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Written by @CortexPE <https://CortexPE.xyz>
+ * Written by @supercrafter333 <https://CortexPE.xyz>
  * Intended for use on SynicadeNetwork <https://synicade.com>
  */
 
@@ -28,46 +28,74 @@ declare(strict_types = 1);
 
 namespace CortexPE\DiscordWebhookAPI;
 
+class Message implements \JsonSerializable  {
 
-class Message implements \JsonSerializable {
-	/** @var array */
-	protected $data = [];
+    protected array $data = [];
 
-	public function setContent(string $content): void{
-		$this->data["content"] = $content;
-	}
+    public function __construct(array $embeds = null)
+    {
+        if ($embeds !== null) {
+            foreach ($embeds as $embed) {
+                $this->addEmbed($embed);
+            }
+        }
+    }
 
-	public function getContent(): ?string{
-		return $this->data["content"];
-	}
+    public function setContent(string $content): self
+    {
+        $this->data["content"] = $content;
+        return $this;
+    }
 
-	public function getUsername(): ?string{
-		return $this->data["username"];
-	}
+    public function getContent(): ?string
+    {
+        return $this->data["content"];
+    }
 
-	public function setUsername(string $username): void{
-		$this->data["username"] = $username;
-	}
+    public function getUsername(): ?string
+    {
+        return $this->data["username"];
+    }
 
-	public function getAvatarURL(): ?string{
-		return $this->data["avatar_url"];
-	}
+    public function setUsername(string $username): self
+    {
+        $this->data["username"] = $username;
+        return $this;
+    }
 
-	public function setAvatarURL(string $avatarURL): void{
-		$this->data["avatar_url"] = $avatarURL;
-	}
+    public function getAvatarURL(): ?string
+    {
+        return $this->data["avatar_url"];
+    }
 
-	public function addEmbed(Embed $embed):void{
-		if(!empty(($arr = $embed->asArray()))){
-			$this->data["embeds"][] = $arr;
-		}
-	}
+    public function setAvatarURL(string $avatarURL): self
+    {
+        $this->data["avatar_url"] = $avatarURL;
+        return $this;
+    }
 
-	public function setTextToSpeech(bool $ttsEnabled):void{
-		$this->data["tts"] = $ttsEnabled;
-	}
+    public function addEmbed(Embed $embed): ?self
+    {
+        if (!empty(($arr = $embed->asArray()))) {
+            $this->data["embeds"][] = $arr;
+            return $this;
+        }
+        return null;
+    }
 
-	public function jsonSerialize(): array{
-		return $this->data;
-	}
+    public function setTextToSpeech(bool $ttsEnabled): self
+    {
+        $this->data["tts"] = $ttsEnabled;
+        return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->data;
+    }
+
+    public static function create(array $embeds = null): Message
+    {
+        return new Message($embeds);
+    }
 }

@@ -10,7 +10,8 @@
     }
   ],
   "require": {
-    "pocketmine/pocketmine-mp": "5.5.0-BETA1"
+    "pocketmine/pocketmine-mp": "5.5.0-BETA1",
+    "ext-curl": "*"
   },
   "autoload": {
     "classmap": [

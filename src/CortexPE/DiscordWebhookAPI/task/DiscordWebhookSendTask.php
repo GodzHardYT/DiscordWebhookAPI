@@ -17,11 +17,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Written by @CortexPE <https://CortexPE.xyz>
+ * Written by @supercrafter333 <https://CortexPE.xyz>
  * Intended for use on SynicadeNetwork <https://synicade.com>
  */
 
@@ -35,33 +34,29 @@ use CortexPE\DiscordWebhookAPI\Webhook;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 
-class DiscordWebhookSendTask extends AsyncTask {
-	/** @var Webhook */
-	protected $webhook;
-	/** @var Message */
-	protected $message;
+class DiscordWebhookSendTask extends AsyncTask
+{
 
-	public function __construct(Webhook $webhook, Message $message){
-		$this->webhook = $webhook;
-		$this->message = $message;
-	}
+    public function __construct(protected readonly Webhook $webhook, protected readonly Message $message) {}
 
-	public function onRun():void{
-		$ch = curl_init($this->webhook->getURL());
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($this->message));
-		curl_setopt($ch, CURLOPT_POST,true);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
-		$this->setResult([curl_exec($ch), curl_getinfo($ch, CURLINFO_RESPONSE_CODE)]);
-		curl_close($ch);
-	}
+    public function onRun():void
+    {
+        $ch = curl_init($this->webhook->getURL());
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($this->message));
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+        $this->setResult([curl_exec($ch), curl_getinfo($ch, CURLINFO_RESPONSE_CODE)]);
+        curl_close($ch);
+    }
 
-	public function onCompletion():void{
-		$response = $this->getResult();
-		if(!in_array($response[1], [200, 204])){
-			Server::getInstance()->getLogger()->error("[DiscordWebhookAPI] Got error ({$response[1]}): " . $response[0]);
-		}
-	}
+    public function onCompletion():void
+    {
+        $response = $this->getResult();
+        if (!in_array($response[1], [200, 204])) {
+            Server::getInstance()->getLogger()->error("[DiscordWebhooksX] Got error ({$response[1]}): " . $response[0]);
+        }
+    }
 }
